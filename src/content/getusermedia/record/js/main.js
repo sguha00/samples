@@ -25,14 +25,10 @@ const recordedVideo = document.querySelector('video#recorded');
 const recordButton = document.querySelector('button#record');
 recordButton.addEventListener('click', () => {
   if (recordButton.textContent === 'Start Recording') {
-    startRecording();
     player.playVideo();
   } else {
     stopRecording();
     player.stopVideo();
-    recordButton.textContent = 'Start Recording';
-    playButton.disabled = false;
-    downloadButton.disabled = false;
   }
 });
 
@@ -117,6 +113,9 @@ function startRecording() {
 
 function stopRecording() {
   mediaRecorder.stop();
+  recordButton.textContent = 'Start Recording';
+  playButton.disabled = false;
+  downloadButton.disabled = false;
 }
 
 function handleSuccess(stream) {
@@ -164,6 +163,7 @@ function onYouTubeIframeAPIReady() {
     videoId: 'SaA_cs4WZHM',
     events: {
         'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange,
     }
   });
 }
@@ -171,4 +171,15 @@ function onYouTubeIframeAPIReady() {
 function onPlayerReady() {
   const startButton = document.querySelector('button#start');
   startButton.disabled = false;
+}
+
+let recording = false;
+function onPlayerStateChange(event) {
+  if (event.data == YT.PlayerState.PLAYING && !recording){
+    startRecording();
+    recording = true;
+  } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+    stopRecording();
+    recording = false;
+  }
 }
