@@ -160,7 +160,7 @@ function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
     height: '315',
     width: '560',
-    videoId: 'SaA_cs4WZHM',
+    videoId: getVideoIdFromUrl() || 'SaA_cs4WZHM',
     events: {
         'onReady': onPlayerReady,
         'onStateChange': onPlayerStateChange,
@@ -182,4 +182,14 @@ function onPlayerStateChange(event) {
     stopRecording();
     recording = false;
   }
+}
+
+function getVideoIdFromUrl() {
+  if (window.location.search) {
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('videoid')) {
+      return urlParams.get('videoid');
+    }
+  }
+  return null;
 }
