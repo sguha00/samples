@@ -122,9 +122,9 @@ function handleSuccess(stream) {
   window.stream = stream;
 
   const gumVideo = document.querySelector('video#gum');
-  gumVideo.setAttribute('autoplay', '');
-  gumVideo.setAttribute('muted', '');
-  gumVideo.setAttribute('playsinline', '');
+  // gumVideo.setAttribute('autoplay', '');
+  // gumVideo.setAttribute('muted', '');
+  // gumVideo.setAttribute('playsinline', '');
   gumVideo.srcObject = stream;
 }
 
@@ -142,7 +142,7 @@ document.querySelector('button#start').addEventListener('click', async () => {
   const hasEchoCancellation = document.querySelector('#echoCancellation').checked;
   const constraints = {
     audio: {
-      echoCancellation: {exact: hasEchoCancellation}
+      echoCancellation: hasEchoCancellation
     },
     video: {
       width: 1280, height: 720
