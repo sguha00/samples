@@ -123,6 +123,17 @@ function handleSuccess(stream) {
 
   const gumVideo = document.querySelector('video#gum');
   gumVideo.srcObject = stream;
+
+  const playAudio = document.querySelector('#realtimeAudio').checked;
+  if (playAudio) {
+    const audioTracks = stream.getAudioTracks();
+    console.log('Using audio device: ' + audioTracks[0].label);
+    stream.oninactive = function() {
+      console.log('Stream ended');
+    };
+    const gumAudio = document.querySelector('audio#gum-audio');
+    gumAudio.srcObject = stream;
+  }
 }
 
 async function init(constraints) {
